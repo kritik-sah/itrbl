@@ -53,7 +53,6 @@ const BridgeForm = () => {
     // Add your logic for handling the "Send" button click
     if (weiAmount <= Number(balanceData?.value)) {
       sendTransaction && sendTransaction();
-      console.log("transactionData:", transactionData);
     }
   };
 
@@ -73,7 +72,25 @@ const BridgeForm = () => {
     }
   }, [transactionSuccessFull, transactinFailed]);
 
-  console.log(process.env);
+  useEffect(() => {
+    const data = {
+      address: address,
+      amount: Number(amount),
+      hash: transactionData
+        ? `https://sepolia.etherscan.io/tx/${transactionData?.hash}`
+        : "",
+    };
+    if (transactionData) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/record`, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+    }
+    console.log(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionData]);
+
+  console.log("transactionData:", transactionData);
 
   return (
     <div className="flex items-center justify-center flex-grow flex-shrink-0 min-h-[75vh] p-4">
