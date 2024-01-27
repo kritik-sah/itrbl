@@ -153,7 +153,7 @@ const SiteHeader = () => {
                         </a>
                         <a
                           className="h-8 w-8 bg-ui-white rounded flex items-center justify-center text-ui-highlight text-xl"
-                          href="https://opensea.io/collection/contributors-of-it-rebel"
+                          href="https://www.youtube.com/itrebels"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -161,7 +161,7 @@ const SiteHeader = () => {
                         </a>
                         <a
                           className="h-8 w-8 bg-ui-white rounded flex items-center justify-center text-ui-highlight text-xl"
-                          href="https://opensea.io/collection/contributors-of-it-rebel"
+                          href="https://github.com/kritik-sah/itrbl"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
