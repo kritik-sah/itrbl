@@ -77,7 +77,7 @@ const TradeLevel = () => {
     };
 
     fetch(
-      "https://testnets-api.opensea.io/api/v2/chain/mumbai/account/0x0DB63C9613b3BECf644A298AfECBa450795f612B/nfts?collection=contributors-of-it-rebel-5&limit=200",
+      `https://api.opensea.io/api/v2/chain/matic/account/${address}/nfts?collection=contributors-of-it-rebel&limit=200`,
       options
     )
       .then((response) => response.json())
