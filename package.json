@@ -1,5 +1,5 @@
 {
-  "name": "eth-blast",
+  "name": "itrbl",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -9,17 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.14",
+    "@radix-ui/react-select": "^2.0.0",
     "@rainbow-me/rainbowkit": "^1.3.3",
+    "@tanstack/react-query": "^4.36.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-toastify": "^10.0.3",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
     "viem": "~1.21.4",
     "wagmi": "~1.4.13"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.17.20",
     "@types/node": "^18.19.3",
     "@types/react": "^18.2.43",
     "autoprefixer": "^10.4.17",

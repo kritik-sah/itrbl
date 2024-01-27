@@ -1,13 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Hero from "../components/Hero";
-import SiteHeader from "../components/SiteHeader";
+import TradeLevel from "../components/TradeLevel";
+import DappLayout from "../components/layouts/DappLayout";
 
-const Home: NextPage = () => {
+const Tradelevel: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Contributors of IT Rebel | ITRBL</title>
+        <title>Contributors of IT Rebel | Trade level</title>
         <meta
           content="Want to transfer your eth tokens to Blast L2 chain, We can help you."
           name="description"
@@ -15,12 +15,11 @@ const Home: NextPage = () => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
 
-      <main>
-        <SiteHeader />
-        <Hero />
-      </main>
+      <DappLayout>
+        <TradeLevel />
+      </DappLayout>
     </div>
   );
 };
 
-export default Home;
+export default Tradelevel;

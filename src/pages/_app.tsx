@@ -1,18 +1,27 @@
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
+import { Inter as FontSans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { configureChains, createConfig, sepolia, WagmiConfig } from "wagmi";
-import { goerli, mainnet } from "wagmi/chains";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { polygon, polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import "../styles/globals.css";
+import { cn } from "../utils/utils";
+
+export const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     // mainnet,
-    sepolia,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [sepolia] : []),
+    polygon,
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
+      ? [polygonMumbai]
+      : []),
   ],
   [publicProvider()]
 );
@@ -32,12 +41,16 @@ const wagmiConfig = createConfig({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
-        <ToastContainer />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <body
+      className={cn("min-h-screen font-sans antialiased", fontSans.variable)}
+    >
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </body>
   );
 }
 
