@@ -106,7 +106,7 @@ const SiteHeader = () => {
                 </button>
 
                 {isMobileMenuOpen && (
-                  <div className="absolute top-16 left-0 w-full bg-ui-dark/50 py-4 px-2">
+                  <div className="absolute top-16 left-0 w-full bg-ui-dark/95 py-4 px-2">
                     <ul className="flex flex-col items-start gap-4 text-ui-white">
                       <li className="w-full">
                         <Link
