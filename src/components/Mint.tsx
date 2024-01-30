@@ -6,6 +6,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import itrblAbi from "../libs/abi.json";
+import zoAbi from "../libs/zoAbi.json";
 
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -13,8 +14,12 @@ import { Address, parseEther, parseGwei } from "viem";
 import { useAccount, useBalance } from "wagmi";
 import Container from "./ui/Container";
 
+const ZoFounderNFTcontract = "0xF9e631014Ce1759d9B76Ce074D496c3da633BA12";
+const publicMintDate = new Date("10 feb 2024");
+
 const MintNft = () => {
   const [collectionStats, setCollectionStats] = useState<any>();
+  const [isPermitedToMint, setIsPermitedToMint] = useState<boolean>(false);
   const { address } = useAccount();
   const { data: balanceData, refetch: refetchBalance } = useBalance({
     address,
@@ -64,6 +69,25 @@ const MintNft = () => {
     functionName: "balanceOf",
     args: [address],
   });
+  const yourZoHolding = useContractRead({
+    address: ZoFounderNFTcontract,
+    abi: zoAbi,
+    functionName: "balanceOf",
+    args: [address],
+    chainId: 1,
+  });
+
+  function checkPermisions() {
+    if (Number(yourZoHolding?.data) > 0) {
+      console.log("yourZoHolding?.data", yourZoHolding?.data);
+      return true;
+    }
+    if (new Date() >= publicMintDate) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   useEffect(() => {
     const options = {
@@ -82,6 +106,12 @@ const MintNft = () => {
       .then((response) => setCollectionStats(response))
       .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    if (address) {
+      setIsPermitedToMint(checkPermisions());
+    }
+  }, [address, yourZoHolding]);
 
   const handleMintClick = () => {
     // Add your logic for handling the "Send" button click
@@ -179,19 +209,31 @@ const MintNft = () => {
                 {` $${balanceData?.symbol}`}
               </span>
             </p>
+            <p>
+              Zo World Founder Member:{" "}
+              <span className="text-ui-highlight">
+                {Number(yourZoHolding?.data) > 0
+                  ? `Zo Zo Zo...bro!`
+                  : "oops!!! wait a minute, Who are you?"}
+              </span>
+            </p>
           </div>
           <button
             className={`bg-ui-highlight text-ui-white font-bold uppercase p-3 w-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed`}
             onClick={handleMintClick}
             disabled={
-              balanceData?.value! < Number(mintValue.data) || isTxnProcessing
+              !isPermitedToMint ||
+              balanceData?.value! < Number(mintValue.data) ||
+              isTxnProcessing
             }
           >
-            {isTxnProcessing
-              ? "minting..."
-              : `MINT for ${(Number(mintValue.data) / 10 ** 18).toFixed(
-                  0
-                )} $MATIC`}
+            {isPermitedToMint
+              ? isTxnProcessing
+                ? "minting..."
+                : `MINT for ${(Number(mintValue.data) / 10 ** 18).toFixed(
+                    0
+                  )} $MATIC`
+              : "Public mint is not yet started"}
           </button>
           {balanceData?.value! < Number(mintValue.data) ? (
             <span className="text-ui-white/40 text-sm flex items-center justify-start gap-1">

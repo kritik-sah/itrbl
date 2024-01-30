@@ -9,7 +9,7 @@ interface ContainerProps {
 const Container: React.FC<ContainerProps> = ({ children }: ContainerProps) => {
   const { address, isConnecting, isDisconnected } = useAccount();
   return (
-    <div className="flex items-center justify-center flex-grow flex-shrink-0 min-h-[75vh] p-4">
+    <div className="relative flex items-center justify-center flex-grow flex-shrink-0 min-h-[75vh] p-4">
       <div className="border-2 border-dashed border-spacing-6-6 border-ui-white/10 p-4 w-full md:w-auto">
         <div className="bg-ui-stroke/50 p-5 bg-opacity-70 backdrop-filter backdrop-blur-lg">
           {isConnecting ? (

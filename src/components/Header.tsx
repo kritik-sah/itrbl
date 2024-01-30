@@ -40,6 +40,20 @@ const Header = () => {
             </Link>
           </li>
         </ul>
+        <div className="relative flex flex-shrink-0 flex-grow bg-ui-highlight text-ui-white overflow-hidden">
+          <p className="animate-marquee whitespace-nowrap w-full">
+            Public mint will start from 1st Feb 2024. and If you want to take
+            part in pre public mint you must hold a{" "}
+            <a
+              href="https://opensea.io/collection/founders-of-zo-world"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              &quot;Zo World Founders&quot;
+            </a>{" "}
+            NFT ~
+          </p>
+        </div>
       </div>
     </header>
   );
