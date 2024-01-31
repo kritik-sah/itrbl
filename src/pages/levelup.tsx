@@ -8,11 +8,6 @@ const Levelup: NextPage = () => {
     <div>
       <Head>
         <title>Contributors of IT Rebel | Level Up</title>
-        <meta
-          content="Want to transfer your eth tokens to Blast L2 chain, We can help you."
-          name="description"
-        />
-        <link href="/favicon.ico" rel="icon" />
       </Head>
 
       <DappLayout>

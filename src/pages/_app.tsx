@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       className={cn("min-h-screen font-sans antialiased", fontSans.variable)}
     >
       <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains}>
+        <RainbowKitProvider chains={[polygon]}>
           <Component {...pageProps} />
           <ToastContainer />
         </RainbowKitProvider>

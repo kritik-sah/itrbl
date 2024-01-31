@@ -11,8 +11,8 @@ const Header = () => {
         </Link>
         <ConnectButton />
       </div>
-      <div className="bg-ui-highlight flex items-center justify-start gap-4">
-        <ul className="flex items-center gap-4 text-sm p-3">
+      <div className="bg-ui-highlight flex w-full overflow-hidden items-center justify-start gap-4">
+        <ul className="flex flex-shrink-0 items-center gap-4 text-sm p-3">
           <li>
             <Link
               className="text-ui-white transition hover:text-ui-white/75"
@@ -42,8 +42,8 @@ const Header = () => {
         </ul>
         <div className="relative flex flex-shrink-0 flex-grow bg-ui-highlight text-ui-white overflow-hidden">
           <p className="animate-marquee whitespace-nowrap w-full">
-            Public mint will start from 1st Feb 2024. and If you want to take
-            part in pre public mint you must hold a{" "}
+            Public mint will start from 10th Feb 2024. and If you want to take
+            part in pre public mint (1st Feb) you must hold a{" "}
             <a
               href="https://opensea.io/collection/founders-of-zo-world"
               target="_blank"
