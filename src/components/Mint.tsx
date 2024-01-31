@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { Address, parseEther, parseGwei } from "viem";
 import { useAccount, useBalance } from "wagmi";
 import Container from "./ui/Container";
+import WalletInput from "./ui/WalletInput";
 
 const ZoFounderNFTcontract = "0xF9e631014Ce1759d9B76Ce074D496c3da633BA12";
 const publicMintDate = new Date("10 feb 2024");
@@ -24,6 +25,7 @@ const MintNft = () => {
   const { data: balanceData, refetch: refetchBalance } = useBalance({
     address,
   });
+  const [sendToAddress, setSendToAddress] = useState<any>(address);
 
   const contractAddress: Address = `0x${process.env.NEXT_PUBLIC_CONTRACT_ADDRESS}`;
   const { data: mintData, write: mint } = useContractWrite({
@@ -76,9 +78,19 @@ const MintNft = () => {
     args: [address],
     chainId: 1,
   });
+  const sendigToZoHolding = useContractRead({
+    address: ZoFounderNFTcontract,
+    abi: zoAbi,
+    functionName: "balanceOf",
+    args: [sendToAddress],
+    chainId: 1,
+  });
 
   function checkPermisions() {
-    if (Number(yourZoHolding?.data) > 0) {
+    if (
+      Number(yourZoHolding?.data) > 0 ||
+      Number(sendigToZoHolding?.data) > 0
+    ) {
       console.log("yourZoHolding?.data", yourZoHolding?.data);
       return true;
     }
@@ -112,16 +124,18 @@ const MintNft = () => {
 
   useEffect(() => {
     if (address) {
-      setIsPermitedToMint(checkPermisions());
+      const permit = checkPermisions();
+      console.log("Permit", permit, address, sendToAddress);
+      setIsPermitedToMint(permit);
     }
   }, [address, yourZoHolding]);
 
   const handleMintClick = () => {
     // Add your logic for handling the "Send" button click
-    if (address && typeof mintValue?.data === "bigint") {
+    if (address && isPermitedToMint && typeof mintValue?.data === "bigint") {
       mint({
-        args: [address],
-        to: address,
+        args: [sendToAddress],
+        to: sendToAddress,
         value: mintValue?.data,
       });
     }
@@ -129,7 +143,7 @@ const MintNft = () => {
 
   return (
     <Container>
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-6 mb-4">
         <div className="flex items-center justify-center">
           <Image
             src="/images/mystery-box.png"
@@ -221,38 +235,46 @@ const MintNft = () => {
               </span>
             </p>
           </div>
-          <button
-            className={`bg-ui-highlight text-ui-white font-bold uppercase p-3 w-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed`}
-            onClick={handleMintClick}
-            disabled={
-              !isPermitedToMint ||
-              balanceData?.value! < Number(mintValue.data) ||
-              isTxnProcessing
-            }
-          >
-            {isPermitedToMint
-              ? isTxnProcessing
-                ? "minting..."
-                : `MINT for ${(Number(mintValue.data) / 10 ** 18).toFixed(
-                    0
-                  )} $MATIC`
-              : "Public mint is not yet started"}
-          </button>
-          {balanceData?.value! < Number(mintValue.data) ? (
-            <span className="text-ui-white/40 text-sm flex items-center justify-start gap-1">
-              You don&lsquo;t have enough matic
-              <a
-                className="text-ui-highlight text-sm"
-                href="https://quickswap.exchange/#/swap?swapIndex=0&currency0=ETH"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                swap
-              </a>
-              <FaExternalLinkAlt className="text-xs text-ui-highlight/70" />
-            </span>
-          ) : null}
         </div>
+      </div>
+      <div className="flex flex-col items-start justify-between gap-2 text-ui-white w-full">
+        <WalletInput
+          label="Send to :"
+          value={sendToAddress}
+          isFounder={Number(sendigToZoHolding?.data) > 0}
+          onChange={setSendToAddress}
+        />
+        <button
+          className={`bg-ui-highlight text-ui-white font-bold uppercase p-3 w-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed`}
+          onClick={handleMintClick}
+          disabled={
+            !isPermitedToMint ||
+            balanceData?.value! < Number(mintValue.data) ||
+            isTxnProcessing
+          }
+        >
+          {isPermitedToMint
+            ? isTxnProcessing
+              ? "minting..."
+              : `MINT for ${(Number(mintValue.data) / 10 ** 18).toFixed(
+                  0
+                )} $MATIC`
+            : "Public mint is not yet started"}
+        </button>
+        {balanceData?.value! < Number(mintValue.data) ? (
+          <span className="text-ui-white/40 text-sm flex items-center justify-start gap-1">
+            You don&lsquo;t have enough matic
+            <a
+              className="text-ui-highlight text-sm"
+              href="https://quickswap.exchange/#/swap?swapIndex=0&currency0=ETH"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              swap
+            </a>
+            <FaExternalLinkAlt className="text-xs text-ui-highlight/70" />
+          </span>
+        ) : null}
       </div>
     </Container>
   );
